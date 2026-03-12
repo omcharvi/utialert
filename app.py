@@ -10,6 +10,9 @@ st.set_page_config(
     layout="centered"
 )
 
+# ── Backend API URL ───────────────────────────────────
+API_URL = "https://utialert-backend.onrender.com"
+
 # ── Load ML Model directly ────────────────────────────
 @st.cache_resource
 def load_model():
