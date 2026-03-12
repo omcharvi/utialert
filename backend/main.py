@@ -1,22 +1,32 @@
 from fastapi import FastAPI
-from backend.schemas import UserInputSchema, PredictionResult
+from fastapi.middleware.cors import CORSMiddleware
+from backend.schemas import UserInputSchema
 from backend.model import predict_uti
 
 # Create FastAPI app
 app = FastAPI(title="UTIAlert API", version="1.0")
 
-# Home route - just to test if API is running
+# ── Allow Streamlit Cloud to call this API ────────────
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Home route
 @app.get("/")
 def home():
     return {"message": "UTIAlert API is running! ✅"}
 
-# Predict route - receives symptoms, returns prediction
+# Predict route
 @app.post("/predict")
 def predict(data: UserInputSchema):
     result = predict_uti(data)
     return result
 
-# Education route - returns UTI info
+# Education route
 @app.get("/education")
 def education():
     return {
